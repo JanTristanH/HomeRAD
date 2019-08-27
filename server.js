@@ -1,21 +1,27 @@
 console.log('hi');
+const fetch = require('node-fetch');
 const https = require('https');
 const url = "https://geodienste.hamburg.de/HH_WFS_Stadtrad?service=WFS&request=GetFeature&VERSION=1.1.0&typename=stadtrad_stationen";
 
 
 
 
-/*
-fetch(url, {method: 'GET'})
-    .then( response => {
-        if (response.ok){
-            return response.json();
-        }
-    }).then(jsonResponse => {
-    JSON.stringify(jsonResponse);
-        //console.log(jsonResponse);
-});
-*/
+
+fetch(url)
+    .then( response => response.text())
+    .then( res => {
+        //console.log(res);
+        const fs = require('fs');
+        fs.writeFile("/tmp/cityBikes", res, function(err) {
+            if(err) {
+                return console.log(err);
+            }
+
+            console.log("The file was saved!");
+        });
+
+    });
+
 let bikeData = () => {
     return new Promise((resolve, reject) => {
         const host = "geodienste.hamburg.de";
@@ -26,7 +32,7 @@ let bikeData = () => {
             path,
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/xml',
                 'service' : 'WFS',
                 'request':'GetFeature',
                 'VERSION': '1.1.0',
@@ -53,4 +59,4 @@ let bikeData = () => {
     })
 };
 
-bikeData().then( res => console.log(res));
+//bikeData().then( res => console.log(res));

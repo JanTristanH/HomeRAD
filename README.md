@@ -1,2 +1,2 @@
 # HomeRAD
-Trying to fetch StadtRAD data my bikestation
+Trying to fetch StadtRAD data my bike station

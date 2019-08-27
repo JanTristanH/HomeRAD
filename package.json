@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JanTristanH/HomeRAD#readme",
   "dependencies": {
+    "fast-xml-parser": "^3.12.20",
     "node-fetch": "^2.6.0"
   }
 }

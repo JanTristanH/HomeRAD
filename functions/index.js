@@ -30,29 +30,39 @@ app.intent('favorite color', (conv, {color}) => {
     conv.close('Your lucky number is ' + luckyNumber);
 });
 
-app.intent('bike available', (conv, {}) => {
-    const fetch = require('node-fetch');
-    const parser = require('fast-xml-parser');
-    const url = 'https://geodienste.hamburg.de/HH_WFS_Stadtrad?service=WFS&request=GetFeature&VERSION=1.1.0&typename=stadtrad_stationen';
+app.intent('bike available', async (conv) => {
+    return new Promise((resolve, reject) =>{
+        const fetch = require('node-fetch');
+        const parser = require('fast-xml-parser');
+        const url = 'https://geodienste.hamburg.de/HH_WFS_Stadtrad?service=WFS&request=GetFeature&VERSION=1.1.0&typename=stadtrad_stationen';
 
-    conv.close(`I'm sorry, something went wrong connecting to the Stadtrad servers.`);
-    fetch(url)
-        .then(response = response.text())
-        .then(res => {
-            let tObj = parser.getTraversalObj(res);
-            let jsonObj = parser.convertToJson(tObj);
-            let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( e => {
-                // returns an array with only desired station, for testing purposes only Sievekingsallee / Sievekingdamm
-                return  e[`app:stadtrad_stationen`][`app:uid`] == "3CB6C09F1CF83370E57148D538F04E530AC4041D";
-            })[0][`app:stadtrad_stationen`][`app:anzahl_raeder`];
-            // Respond with the bike count  and end the conversation.
-            conv.close(bikeCount + 'bikes are currently available at Sievekingsallee.');
-        })
-        .catch( error => {
-            conv.close(`I'm sorry, something went wrong connecting to the Stadtrad servers.`);
-        } );
-
-
+        fetch(url)
+            .then((response) => {
+                return response.text();
+            })
+            .then((res) => {
+                let tObj = parser.getTraversalObj(res);
+                let jsonObj = parser.convertToJson(tObj);
+                // eslint-disable-next-line max-len
+                let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( (e) => {
+                    // eslint-disable-next-line max-len
+                    // returns an array with only desired stations, for testing purposes only Sievekingsallee / Sievekingdamm
+                    // eslint-disable-next-line max-len
+                    return e[`app:stadtrad_stationen`][`app:uid`] == '3CB6C09F1CF83370E57148D538F04E530AC4041D';
+                })[0][`app:stadtrad_stationen`][`app:anzahl_raeder`];
+                // Respond with the bike count  and end the conversation.
+                console.log(bikeCount);
+                // eslint-disable-next-line max-len
+                conv.close(bikeCount + ' bikes are currently available at Sievekingsallee.');
+                resolve();
+            })
+            .catch( (error) => {
+                // eslint-disable-next-line max-len
+                conv.close(`I'm sorry, something went wrong connecting to the Stadtrad servers.`);
+                resolve();
+            } );
+    });
 });
+
 // Set the DialogflowApp object to handle the HTTPS POST request.
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);

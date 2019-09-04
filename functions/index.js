@@ -53,12 +53,21 @@ app.intent('bike available', async (conv) => {
                 // Respond with the bike count  and end the conversation.
                 console.log(bikeCount);
                 // eslint-disable-next-line max-len
-                conv.close(bikeCount + ' bikes are currently available at Sievekingsallee.');
+                if(bikeCount){
+                    if(bikeCount = 1){
+                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar".`);
+                    } else{
+                    conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar".`);
+                    }
+                } else {
+                    conv.close('Leider sind gerade keine Räder bei Sievekingsallee verfügbar.');
+                }
+
                 resolve();
             })
             .catch( (error) => {
                 // eslint-disable-next-line max-len
-                conv.close(`I'm sorry, something went wrong connecting to the Stadtrad servers.`);
+                conv.close(`Irgendwas lief schief beim Verbinden mit den Stadtrad Servern. Bitte probier es später nochmal.`);
                 resolve();
             } );
     });

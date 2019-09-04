@@ -24,11 +24,6 @@ const app = dialogflow({debug: true});
 
 // Handle the Dialogflow intent named 'favorite color'.
 // The intent collects a parameter named 'color'.
-app.intent('favorite color', (conv, {color}) => {
-    const luckyNumber = color.length;
-    // Respond with the user's lucky number and end the conversation.
-    conv.close('Your lucky number is ' + luckyNumber);
-});
 
 app.intent('bike available', async (conv) => {
     return new Promise((resolve, reject) =>{
@@ -55,9 +50,9 @@ app.intent('bike available', async (conv) => {
                 // eslint-disable-next-line max-len
                 if(bikeCount){
                     if(bikeCount = 1){
-                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar".`);
+                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar.`);
                     } else{
-                    conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar".`);
+                    conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar.`);
                     }
                 } else {
                     conv.close('Leider sind gerade keine Räder bei Sievekingsallee verfügbar.');

@@ -1,6 +1,9 @@
 # HomeRAD
 Trying to fetch StadtRAD data my bikestation
 
+## Alpha testing link
+https://assistant.google.com/services/a/uid/00000008fbbda0c5?hl=de
+
 ## Google actions project id
 homerad-33b7f
 

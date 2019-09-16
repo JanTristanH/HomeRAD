@@ -24,11 +24,12 @@ const app = dialogflow({debug: true});
 
 // Handle the Dialogflow intent named 'bike available'.
 app.intent('bike available', async (conv) => {
-    return new Promise((resolve, reject) =>{
+    return new Promise((resolve, reject) => {
         const fetch = require('node-fetch');
         const parser = require('fast-xml-parser');
         const url = 'https://geodienste.hamburg.de/HH_WFS_Stadtrad?service=WFS&request=GetFeature&VERSION=1.1.0&typename=stadtrad_stationen';
         const stationId = '3CB6C09F1CF83370E57148D538F04E530AC4041D';
+        const stationName = 'Sievekingdamm';
         fetch(url)
             .then((response) => {
                 return response.text();
@@ -36,26 +37,32 @@ app.intent('bike available', async (conv) => {
             .then((res) => {
                 let tObj = parser.getTraversalObj(res);
                 let jsonObj = parser.convertToJson(tObj);
-                let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( (e) => {
+                let stations = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter((e) => {
                     // returns an array with only desired stations, for testing purposes only Sievekingsallee / Sievekingdamm
-                    return e[`app:stadtrad_stationen`][`app:uid`] == stationId;
-                })[0][`app:stadtrad_stationen`][`app:anzahl_raeder`];
-                // Respond with the bike count and end the conversation.
-                if(bikeCount){
-                    if(bikeCount = 1){
-                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar.`);
-                    } else{
-                        conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar.`);
+                    return e[`app:stadtrad_stationen`][`app:name`].contains(stationName);
+                });
+                if (stations.length === 1) {
+                    // Respond with the bike count and end the conversation if only one station matches
+                    const bikeCount = [0][`app:stadtrad_stationen`][`app:anzahl_raeder`];
+                    if (bikeCount) {
+                        if (bikeCount === 1) {
+                            conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar.`);
+                        } else {
+                            conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar.`);
+                        }
+                    } else {
+                        conv.close('Leider sind gerade keine Räder bei Sievekingsallee verfügbar.');
                     }
-                } else {
-                    conv.close('Leider sind gerade keine Räder bei Sievekingsallee verfügbar.');
+                    resolve();
+                }else{
+                    conv.ask(`Ich habe mehrere Stationen mit dem Namen ${stationName} gefunden.`);
+                    //present options
                 }
-                resolve();
             })
-            .catch( (error) => {
+            .catch((error) => {
                 conv.close(`Irgendwas lief schief beim Verbinden mit den Stadtrad Servern. Bitte probier es später nochmal.`);
                 resolve();
-            } );
+            });
     });
 });
 

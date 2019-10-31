@@ -21,8 +21,7 @@ app.intent('bike available', async (conv) => {
                 return response.text();
             })
             .then((res) => {
-                let tObj = parser.getTraversalObj(res);
-                let jsonObj = parser.convertToJson(tObj);
+                let jsonObj = parser.parse(res);
                 let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( (e) => {
                     // returns an array with only desired stations, for testing purposes only Sievekingsallee / Sievekingdamm
                     return e[`app:stadtrad_stationen`][`app:uid`] == stationId;

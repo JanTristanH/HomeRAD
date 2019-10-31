@@ -47,4 +47,4 @@ app.intent('bike available', async (conv) => {
 });
 
 // Set the DialogflowApp object to handle the HTTPS POST request.
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest(app);
+exports.dialogflowFirebaseFulfillment = functions.region('europe-west1').https.onRequest(app);

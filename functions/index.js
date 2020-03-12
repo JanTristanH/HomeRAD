@@ -15,7 +15,7 @@ app.intent('bike available', async (conv) => {
         const fetch = require('node-fetch');
         const parser = require('fast-xml-parser');
         const url = 'https://geodienste.hamburg.de/HH_WFS_Stadtrad?service=WFS&request=GetFeature&VERSION=1.1.0&typename=stadtrad_stationen';
-        const stationId = '3CB6C09F1CF83370E57148D538F04E530AC4041D';
+        const stationId = 'e93a5c34-df7f-4cde-b3e4-36f81f8d5726';
         fetch(url)
             .then((response) => {
                 return response.text();

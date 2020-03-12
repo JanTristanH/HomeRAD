@@ -29,9 +29,9 @@ app.intent('bike available', async (conv) => {
                 // Respond with the bike count and end the conversation.
                 if(bikeCount){
                     if(bikeCount === 1){
-                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingalle verfügbar.`);
+                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingallee verfügbar.`);
                     } else{
-                        conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingalle verfügbar.`);
+                        conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingallee verfügbar.`);
                     }
                 } else {
                     conv.close('Leider sind gerade keine Räder bei Sievekingsallee verfügbar.');

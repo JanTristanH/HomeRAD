@@ -24,8 +24,8 @@ app.intent('bike available', async (conv) => {
                 let jsonObj = parser.parse(res);
                 let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( (e) => {
                     // returns an array with only desired stations, for testing purposes only Sievekingsallee / Sievekingdamm
-                    return e[`app:stadtrad_stationen`][`app:uid`] == stationId;
-                })[0][`app:stadtrad_stationen`][`app:anzahl_raeder`];
+                    return e[`de.hh.up:stadtrad_stationen`][`de.hh.up:uid`] == stationId;
+                })[0][`de.hh.up:stadtrad_stationen`][`de.hh.up:uid`];
                 // Respond with the bike count and end the conversation.
                 if(bikeCount){
                     if(bikeCount === 1){
@@ -39,6 +39,7 @@ app.intent('bike available', async (conv) => {
                 resolve();
             })
             .catch( (error) => {
+                console.log(error);
                 conv.close(`Irgendwas lief schief beim Verbinden mit den Stadtrad Servern. Bitte probier es später nochmal.`);
                 resolve();
             } );

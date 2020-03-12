@@ -25,7 +25,7 @@ app.intent('bike available', async (conv) => {
                 let bikeCount = jsonObj[`wfs:FeatureCollection`][`gml:featureMember`].filter( (e) => {
                     // returns an array with only desired stations, for testing purposes only Sievekingsallee / Sievekingdamm
                     return e[`de.hh.up:stadtrad_stationen`][`de.hh.up:uid`] == stationId;
-                })[0][`de.hh.up:stadtrad_stationen`][`de.hh.up:uid`];
+                })[0][`de.hh.up:stadtrad_stationen`][`de.hh.up:anzahl_raeder`];
                 // Respond with the bike count and end the conversation.
                 if(bikeCount){
                     if(bikeCount === 1){

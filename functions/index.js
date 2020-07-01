@@ -10,6 +10,7 @@ const functions = require('firebase-functions');
 const app = dialogflow({debug: true});
 
 // Handle the Dialogflow intent named 'bike available'.
+// eslint-disable-next-line
 app.intent('bike available', async (conv) => {
     return new Promise((resolve, reject) =>{
         const fetch = require('node-fetch');
@@ -29,7 +30,7 @@ app.intent('bike available', async (conv) => {
                 // Respond with the bike count and end the conversation.
                 if(bikeCount){
                     if(bikeCount === 1){
-                        conv.close(`Momentan ist ${bikeCount} Rad bei Sievekingallee verfügbar.`);
+                        conv.close(`Momentan ist ein Rad bei Sievekingallee verfügbar.`);
                     } else{
                         conv.close(`Momentan sind ${bikeCount} Räder bei Sievekingallee verfügbar.`);
                     }
